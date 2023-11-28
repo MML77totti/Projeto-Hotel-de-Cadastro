@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>HOTEL TERABITHIA S.A</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+</head>
+    
+    <body class="fundoCor">
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="img/Capa do Hotel.jpg" class="d-block w-90 com-borda" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="img/hotel 2.jpg" class="d-block w-90 com-borda" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="img/hotel 03.jpg" class="d-block w-90 com-borda" alt="...">
+                </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        <br>    
+        <h1>HOTEL TERABITHIA</h1>
+        <br>
+        <div class="editar01">
+            <h6 style="color: yellow;">Associado ao Hotel Chateau Marmont</h6>
+        </div>
+        <h3>Sistema de banco de dados - Hotel Terabithia.</h3>
+
+        
+        <script>
+            
+            function startScript() {
+                let hotelName;
+                let userName;
+                let password = "0102";
+                let defaultRate;
+                let totalCost = 0;
+                let totalGratis = 0;
+                let totalHalfPrice = 0;
+                let totalGarcons = 0;
+                let totalGarconCost = 0;
+                let totalCafe = 0;
+                let totalAgua = 0;
+                let totalSalgados = 0;
+                let eventoCapacity = 350;
+                let auditorioLaranjaCapacity = 150;
+                let auditorioColoradoCapacity = 350;
+                let auditorioLaranjaChairs = 70;
+                let minDiscountQuantity = 3;
+                let minDiscountValue = 0;
+                let minDiscountCompany = "";
+            
+                // Array para armazenar os nomes dos hóspedes
+                let hospedes = [];
+            
+                function iniciar() {
+                    hotelName = prompt("Digite o nome do hotel:");
+                    userName = prompt("Digite seu nome de usuário:");
+                    let userPassword = prompt("Digite a senha:");
+            
+                    if (userPassword !== password) {
+                        alert("Senha incorreta. Acesso negado.");
+                        return;
+                    }
+            
+                    let option;
+
+                    while (true) {
+                        option = prompt(`Bem-vindo ao Hotel \n${hotelName},  ${userName}. \nEscolha uma opção:\n1. Reserva de Quarto\n2. Cadastro de Hospede\n3. Evento\n4. Buffet\n5. Passeio\n6. Orçamento \n7. Sair`);
+                        
+                        if (option === "7") {
+                            alert(`Muito obrigado e até logo, ${userName}.`);
+                        break; // Sai do loop
+                        }
+
+                        switch (option) {
+            
+                            case "1":
+                                reservadequarto();
+                                break;
+                            case "2":
+                                cadastrodehospede();
+                                break;
+                            case "3":
+                                evento();
+                                break;
+                            case "4":
+                                buffet();
+                                break;
+                            case "5":
+                                passeio();
+                                break;
+                            case "6":
+                                orçamento();
+                                break;
+
+                            default:
+                                alert("Opção inválida. Tente novamente.");
+                        }
+                    }
+                }
+            
+                function reservadequarto() {
+                    let hotelRate = parseFloat(prompt("Qual o valor da diária no hotel?"));
+                    let stayDuration = parseInt(prompt("Quantos dias de hospedagem?"));
+            
+                    if (isNaN(hotelRate) || isNaN(stayDuration) || hotelRate < 0 || stayDuration <= 0 || stayDuration > 30) {
+                        alert("Valor inválido. Volte ao menu inicial.");
+                        return;
+                    }
+            
+                    defaultRate = hotelRate;
+            
+                    let guestName = prompt("Qual o nome do hóspede?");
+                    let confirmation = prompt(`${userName}, você confirma a hospedagem para ${guestName} por ${stayDuration} dias? (S/N)`);
+            
+                    if (confirmation.toUpperCase() === "S") {
+                        let totalCostForStay = calculateCost(stayDuration, hotelRate);
+                        alert(`${userName}, reserva efetuada para ${guestName}. O valor total é de R$${totalCostForStay.toFixed(2)}.`);
+                        totalCost += totalCostForStay;
+                        checkGratisOrHalfPrice(guestName, stayDuration);
+                    } else {
+                        alert(`${userName}, reserva não efetuada.`);
+                    }
+                }
+            
+                function calculateCost(duration, rate) {
+                    return duration * rate;
+                }
+            
+                function checkGratisOrHalfPrice(name, duration) {
+                    if (duration <= 0) return;
+            
+                    let age = parseInt(prompt(`Qual a idade de ${name}?`));
+                    if (age < 6) {
+                        alert(`${name} possui gratuidade.`);
+                        totalGratis++;
+                    } else if (age > 60) {
+                        alert(`${name} paga meia.`);
+                        totalHalfPrice++;
+                    }
+            
+                    let nextGuest = prompt("Qual o nome do próximo hóspede? (Digite 'PARE' para encerrar)");
+                    if (nextGuest.toUpperCase() !== "PARE") {
+                        reservadequarto();
+                    } else {
+                        alert(`${userName}, o valor total das hospedagens é: R$${totalCost.toFixed(2)}; ${totalGratis} gratuidade(s); ${totalHalfPrice} meia(s)`);
+                    }
+                }
+            
+                function evento() {
+                    let garcons = parseInt(prompt("Quantos garçons serão necessários?"));
+                    let hours = parseInt(prompt("Qual a duração do evento em horas?"));
+                    totalGarconCost = 10.5 * garcons * hours;
+                    alert(`Custo total: R$ ${totalGarconCost.toFixed(2)}`);
+                    let confirmation = prompt(`${userName}, gostaria de efetuar a reserva? (S/N)`);
+            
+                    if (confirmation.toUpperCase() === "S") {
+                        alert(`${userName}, reserva efetuada com sucesso.`);
+                    } else {
+                        alert(`${userName}, reserva não efetuada.`);
+                    }
+                }
+            
+                function buffet() {
+                    let guests = parseInt(prompt("Qual o número de convidados para o evento?"));
+            
+                    if (guests > eventoCapacity) {
+                        alert("Quantidade de convidados superior à capacidade máxima.");
+                        return;
+                    }
+            
+                    let cafeLiters = guests * 0.2;
+                    let aguaLiters = guests * 0.5;
+                    let salgados = guests * 7;
+                    let totalBuffetCost = (cafeLiters * 0.8) + (aguaLiters * 0.4) + ((salgados / 100) * 34);
+            
+                    alert(`O evento precisará de ${cafeLiters} litros de café, ${aguaLiters} litros de água, ${salgados} salgados. O custo total do evento será de R$ ${totalBuffetCost.toFixed(2)}`);
+            
+                    let confirmation = prompt(`${userName}, gostaria de efetuar a reserva? (S/N)`);
+            
+                    if (confirmation.toUpperCase() === "S") {
+                        alert(`${userName}, reserva efetuada com sucesso.`);
+                    } else {
+                        alert(`${userName}, reserva não efetuada.`);
+                    }
+                }
+            
+                function passeio() {
+                    let alcoholWayneOil = parseFloat(prompt("Qual o valor do álcool no posto Wayne Oil?"));
+                    let gasolineWayneOil = parseFloat(prompt("Qual o valor da gasolina no posto Wayne Oil?"));
+                    let alcoholStarkPetrol = parseFloat(prompt("Qual o valor do álcool no posto Stark Petrol?"));
+                    let gasolineStarkPetrol = parseFloat(prompt("Qual o valor da gasolina no posto Stark Petrol?"));
+            
+                    let costAlcoholWayneOil = 0.7 * alcoholWayneOil;
+                    let costGasolineWayneOil = gasolineWayneOil;
+            
+                    if (costAlcoholWayneOil < costGasolineWayneOil) {
+                        alert(`${userName}, é mais barato abastecer com álcool no posto Wayne Oil.`);
+                    } else {
+                        alert(`${userName}, é mais barato abastecer com gasolina no posto Wayne Oil.`);
+                    }
+                }
+            
+                function orçamento() {
+                    let companyName;
+                    let serviceRate;
+                    let serviceQuantity;
+                    let serviceDiscount;
+                    let serviceMinQuantity;
+            
+                    let minBudgetValue = Number.MAX_VALUE;
+                    let minBudgetCompany = "";
+            
+                    do {
+                        companyName = prompt("Qual o nome da empresa?");
+                        serviceRate = parseFloat(prompt("Qual o valor por aparelho?"));
+                        serviceQuantity = parseInt(prompt("Qual a quantidade de aparelhos?"));
+                        serviceDiscount = parseFloat(prompt("Qual a porcentagem de desconto?"));
+                        serviceMinQuantity = parseInt(prompt("Qual o número mínimo de aparelhos para conseguir o desconto?"));
+            
+                        let totalServiceCost = calculateServiceCost(serviceRate, serviceQuantity, serviceDiscount, serviceMinQuantity);
+                        alert(`O serviço de ${companyName} custará R$ ${totalServiceCost.toFixed(2)}.`);
+            
+                        if (totalServiceCost < minBudgetValue) {
+                            minBudgetValue = totalServiceCost;
+                            minBudgetCompany = companyName;
+                        }
+            
+                        let newEntry = prompt(`${userName}, deseja informar novos dados? (S/N)`);
+            
+                        if (newEntry.toUpperCase() !== "S") {
+                            alert(`O orçamento de menor valor é o de ${minBudgetCompany} por R$ ${minBudgetValue.toFixed(2)}.`);
+                            break;
+                        }
+                    } while (true);
+                }
+            
+                function calculateServiceCost(rate, quantity, discount, minQuantity) {
+                    let totalCost = rate * quantity;
+                    if (quantity >= minQuantity) {
+                        totalCost -= (discount / 100) * totalCost;
+                    }
+                    return totalCost;
+                }
+            
+                iniciar();
+        }    
+        </script>
+
+
+
+        <p> <button onclick="startScript()" id="botao-iniciar" align="center"><strong>Iniciar</strong></button> </p>
+
+            <footer>
+                <p>Created by <span>MML - Matheus Morrison</span> | all rights reserved</p>
+            </footer>
+            </body>
+
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            
+    </body>
+    
+</html>
